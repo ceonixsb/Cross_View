@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.DS_Store
+*.swp
+
+# training artifacts (keep the shipped checkpoint logs/go2_ppo_tuned/*.zip,*.pkl)
+logs/**/tb/
+logs/**/*.log
+
+# generated eval outputs (keep the shipped demo data/eval_go2_tuned.gif)
+data/*.png

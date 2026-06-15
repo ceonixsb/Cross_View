@@ -1,0 +1,11 @@
+# Kinematic training / eval (no Isaac Sim needed) — Python 3.10+
+numpy
+torch
+stable-baselines3
+gymnasium
+matplotlib
+pillow
+tensorboard
+
+# NOTE: the Isaac Sim deploy (scripts/deploy_isaac.py) ALSO requires Isaac Sim 5.x +
+# Isaac Lab, which are installed separately (NVIDIA), not via pip. See README.
