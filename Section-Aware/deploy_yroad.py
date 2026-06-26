@@ -91,9 +91,13 @@ from isaaclab_assets.robots.unitree import UNITREE_GO2_CFG
 D455_USD = f"{ISAAC_NUCLEUS_DIR}/Sensors/Intel/RealSense/rsd455.usd"
 CRAZYFLIE_USD = f"{ISAAC_NUCLEUS_DIR}/Robots/Bitcraze/Crazyflie/cf2x.usd"
 
+_BUNDLE = Path(__file__).resolve().parent / "assets"            # files shipped in this repo (clone-and-run)
 RL_LAB = Path("/home/hdc/Desktop/Unitree/YSB_Labtask/My_go2_locomotion/Walking/unitree_rl_lab")
 POLICY = RL_LAB / "logs/rsl_rl/unitree_go2_velocity/2026-03-25_22-11-57/exported/policy.pt"
-# Cross_View's composed Go2 USD — base + physics + SENSOR(D455) already attached
+if not POLICY.exists():                                         # fall back to the bundled RL locomotion policy
+    POLICY = _BUNDLE / "policy.pt"                              # -> works right after a plain git clone
+# Cross_View's composed Go2 USD (base+physics+D455). If absent, Isaac Lab's built-in Go2 is used
+# (standard Go2 joint order -> the locomotion policy still walks correctly).
 GO2_USD = Path("/home/hdc/Desktop/Unitree/YSB_Labtask/Cross_View/assets/Go2/usd/go2.usd")
 DECIMATION = 4
 ACT_SCALE = 0.35

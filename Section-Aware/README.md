@@ -26,15 +26,9 @@ conda activate isaacsim
 pip install scipy matplotlib pillow
 ```
 
-Then set the **two absolute paths** at the top of `deploy_yroad.py` to your machine:
+That's all — **the RL locomotion policy is bundled** in `assets/policy.pt`, so the Go2 walks right after a clone (no path editing needed). The Go2 robot model is optional: if the original `Cross_View/assets/Go2` USD is absent, Isaac Lab's **built-in Go2** is used automatically (standard joint order → the policy still walks).
 
-```python
-RL_LAB  = Path(".../unitree_rl_lab")                          # rl_lab locomotion repo
-POLICY  = RL_LAB / "logs/rsl_rl/unitree_go2_velocity/<run>/exported/policy.pt"
-GO2_USD = Path(".../Cross_View/assets/Go2/usd/go2.usd")       # Go2 USD (joint order must match the policy)
-```
-
-> The locomotion policy (`policy.pt`) and Go2 USD are **external assets**, not in this repo — point these to your local copies.
+> The bundled `assets/policy.pt` is the **RL-trained (PPO, rl_lab) velocity locomotion policy** — the low-level controller that turns the planner's velocity command into joint targets.
 
 ---
 
