@@ -11,7 +11,34 @@ drone whole-map BEV (RGB+D)
    (planner.py)                                          deploy_yroad.py
 ```
 
-## Pipeline
+---
+
+## 0. Setup (설치)
+
+Needs **Isaac Sim 5.x + Isaac Lab** (NVIDIA, installed separately — not pip).
+Install guide: <https://isaac-sim.github.io/IsaacLab/>
+
+```bash
+# Isaac Sim + Isaac Lab 가 깔린 conda 환경 (보통 이름: isaacsim)
+conda activate isaacsim
+
+# python 의존성 (torch/numpy 는 Isaac 에 포함, 나머지만)
+pip install scipy matplotlib pillow
+```
+
+Then set the **two absolute paths** at the top of `deploy_yroad.py` to your machine:
+
+```python
+RL_LAB  = Path(".../unitree_rl_lab")                          # rl_lab locomotion repo
+POLICY  = RL_LAB / "logs/rsl_rl/unitree_go2_velocity/<run>/exported/policy.pt"
+GO2_USD = Path(".../Cross_View/assets/Go2/usd/go2.usd")       # Go2 USD (joint order must match the policy)
+```
+
+> The locomotion policy (`policy.pt`) and Go2 USD are **external assets**, not in this repo — point these to your local copies.
+
+---
+
+## 1. Pipeline (수집 → 학습 → 주행)
 
 ```bash
 conda activate isaacsim
@@ -31,6 +58,11 @@ python deploy_yroad.py --gui --steps 40000 --vx 1.5 --show --drone_ctrl
 #   add --cnn    = walk the U-Net-PREDICTED cost map (loads data/BEV/best_jit.pt)
 #   with --cnn   = also pass --sec_len 4.0 (the U-Net was trained on the 4.0 m map)
 ```
+
+> No pre-trained weights are shipped — run steps 1–2 to produce `data/BEV/best.pt`.
+> The step-4 GT-planner demo runs **without** any trained model (it rasterises the cost map from geometry).
+
+---
 
 ## Cost-map classes
 
@@ -53,16 +85,6 @@ Only class 0 is `∞`; 1·2·3 are finite so a route is always found even if it 
 | `infer_yroad.py` | U-Net prediction visualisation (BEV \| GT \| pred \| confidence) |
 | `planner.py` | cost map → Dijkstra distance field → carrot-pursuit (vx,vy,vyaw) |
 | `deploy_yroad.py` | Go2 (rl_lab policy) walking the planned path in Isaac Sim |
-
-## Requirements / external assets
-
-Set these at the top of `deploy_yroad.py` to match your machine:
-
-- **Isaac Sim 5.x + Isaac Lab**, conda env `isaacsim`
-- **rl_lab locomotion policy** — `RL_LAB/logs/rsl_rl/unitree_go2_velocity/<run>/exported/policy.pt`
-  (obs 45-D → 12-D joint targets, 50 Hz, PD kp25/kd0.5)
-- **Go2 USD** — `GO2_USD` (joint order must match the policy)
-- The trained U-Net (`data/BEV/best.pt`) is **not committed** — regenerate via steps 1–2, or ask the author.
 
 ## Drone control (`--drone_ctrl`)
 
