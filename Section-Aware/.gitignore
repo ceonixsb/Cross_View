@@ -1,0 +1,34 @@
+# ── Python ──
+__pycache__/
+*.pyc
+
+# ── large / regenerable: datasets, training logs (NOT for GitHub) ──
+data/
+logs/
+
+# ── kept locally, excluded from THIS Y-Road share ──
+# (cross-view / DINOv3 localization — separate sub-task)
+collect_xview.py
+train_xview.py
+export_xview.py
+eval_xview.py
+train_yroad_dino.py
+# (early exploration / smoke / old scratch)
+collect_data.py
+render_bev.py
+scene_L_map.py
+shot_topdown.py
+monodepth_derisk.py
+dino_smoke.py
+make_arch_diagram.py
+infer_viz.py
+train_unet.py
+eval_cnn_path.py
+eval_cnn_safety.py
+encoder_arch.html
+workflow.html
+# (validation / utility — not part of the minimal pipeline)
+compare_paths.py
+dump_geom.py
+measure_speed.py
+train_local_avoid.py
